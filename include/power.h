@@ -23,7 +23,9 @@ COROUTINE(powerLoop)
 //        Serial.print(F("Apperant Pwr:"));
 //        Serial.print(Irms * 230.0); // Apparent power
         if(Irms > 1){ 
-            Serial.print(F(" Irms:"));
+//            Serial.print(F(" Irms:"));
+            Serial.print(analogRead(PWR_SENSOR));
+            Serial.print("=");
             Serial.println(Irms); // Irms
             _currentStatus.moving=true;
             digitalWrite(STATUS_LED, HIGH);

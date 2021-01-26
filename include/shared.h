@@ -1,6 +1,8 @@
 #pragma once
 #include <AceRoutine.h>
 
+#define hwReboot() wdt_enable(WDTO_15MS); while (1)
+
 
 enum BtnStatus{
     NONE,
@@ -17,7 +19,7 @@ struct ClrStatus {
     bool lightOn;
     long lastAnnunced;
     long lastLightAnnunced;
-};
+} __attribute__((packed, aligned(1)));
 
 class MqttMessage {
     public:

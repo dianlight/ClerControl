@@ -1,4 +1,4 @@
-### Install instruction.
+### Install Firmware instruction.
 
 #### Configure
 
@@ -17,3 +17,9 @@ pio run -t upload -e ATmega328P_MAIN
 
 pio run -t upload -e ATmega328P_SAT
 
+
+### OTA Instruction
+
+#### Install dependencies
+
+pip3 install paho-mqtt

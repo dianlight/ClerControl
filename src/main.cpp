@@ -6,7 +6,7 @@
 //#include "rf.h"
 #include "power.h"
 #include "wall.h"
-#include "updater.h"
+//#include "test_eeprom.h"
 
 #include "shared.h"
 
@@ -20,10 +20,11 @@ void interruprHandler()
 
 void setup()
 {
-  Serial.begin(9600);
-  Serial.println(F("Initialize ...."));
+  Serial.begin(115200);
+  delay(1000);
+  Serial.println(F("$"));
+  Serial.println(MCUSR,BIN);
   Serial.flush();
-  setupUpdater();
 
   // PIN CONFIG
   pinMode(LAN_LED, OUTPUT);
@@ -54,7 +55,6 @@ void setup()
   digitalWrite(RF_LED, LOW);     // Initialize LAN_LED
   digitalWrite(STATUS_LED, LOW); // Initialize LAN_LED
   
-  Serial.println(F("Starting scheduler..."));
   ace_routine::CoroutineScheduler::setup();
 }
 
@@ -86,7 +86,7 @@ COROUTINE(logicLoop)
         if(snapshot.moving && !_lastKnowStatus.moving && _lastKnowStatus.closed){
             // Cler Opening
             MqttMessage message = {
-              "clercontrol/main_gd/state",
+              "clerct/mn_gd/state",
               "opening"
             };
             _lastKnowStatus.moving = true;
@@ -96,7 +96,7 @@ COROUTINE(logicLoop)
         } else if(snapshot.moving && !_lastKnowStatus.moving && !_lastKnowStatus.closed){
             // Cler Closing
             MqttMessage message = {
-              "clercontrol/main_gd/state",
+              "clerct/mn_gd/state",
               "closing"
             };
             _lastKnowStatus.moving = true;
@@ -105,9 +105,9 @@ COROUTINE(logicLoop)
             COROUTINE_CHANNEL_WRITE(mqttChannel,message);
         } else if(!snapshot.moving && (snapshot.closed != _lastKnowStatus.closed || milli-_lastKnowStatus.lastAnnunced > 30000L)) {
             // Cler status is _lastKnowStatus.closed.
-            Serial.println(snapshot.closed);
+//            Serial.println(snapshot.closed);
             MqttMessage message = {
-              "clercontrol/main_gd/state",
+              "clerct/mn_gd/state",
               snapshot.closed?"closed":"open"
             };
             _lastKnowStatus.moving = false;
@@ -118,7 +118,7 @@ COROUTINE(logicLoop)
         } else if(snapshot.lightOn != _lastKnowStatus.lightOn || milli-_lastKnowStatus.lastLightAnnunced > 30000L){
           
             MqttMessage message = {
-              "clercontrol/main_gl/state",
+              "clerct/mn_gl/state",
               snapshot.lightOn?"ON":"OFF"
             };
             _lastKnowStatus.lightOn = snapshot.lightOn;

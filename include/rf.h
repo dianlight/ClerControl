@@ -4,6 +4,7 @@
 #include <PJONOverSampling.h>
 
 #include "pin.h"
+#include "credentials.h"
 
 PJONOverSampling bus(CC_RF_BUS);
 
@@ -53,7 +54,7 @@ void receiver_function(uint8_t *payload, uint16_t length, const PJON_Packet_Info
     }
     if (payload[0] == 'O')
     {
-        Serial.print(F("CLER OPEN EVENT:"));
+        Serial.print(F("COE:"));
         Serial.println(packet_info.tx.id);
         digitalWrite(RF_LED, HIGH);
         delay(30);
@@ -62,7 +63,7 @@ void receiver_function(uint8_t *payload, uint16_t length, const PJON_Packet_Info
     }
     else if (payload[0] == 'C')
     {
-        Serial.print(F("RES BLINK FROM:"));
+        Serial.print(F("RES:"));
         Serial.println(packet_info.tx.id);
         digitalWrite(STATUS_LED, HIGH);
         delay(15);
